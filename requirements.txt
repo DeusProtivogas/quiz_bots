@@ -1,2 +1,4 @@
 python-telegram-bot==13.7
 python-dotenv==1
+redis==5.1.0b3
+vk-api==11.8
