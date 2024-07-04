@@ -7,9 +7,12 @@ def read_file():
 
     question_and_answer = {}
 
-    for filename in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), QUIZ_FOLDER)):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    questions_dir = os.path.join(script_dir, QUIZ_FOLDER)
+
+    for filename in os.listdir(questions_dir):
         if filename.endswith('txt'):
-            with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), QUIZ_FOLDER, filename), 'r', encoding='KOI8-R') as f:
+            with open(os.path.join(questions_dir, filename), 'r', encoding='KOI8-R') as f:
                 file_contents = f.read()
             cntr = 1
             # print(file_contents.split('\n\n'))
