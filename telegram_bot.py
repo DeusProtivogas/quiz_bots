@@ -45,7 +45,7 @@ def start(update: Update, context: CallbackContext) -> None:
     context.user_data['redis_db'] = redis_db
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
     update.message.reply_markdown_v2(
-        fr'Hi {user.mention_markdown_v2()}\!',
+        fr'Привет, {user.mention_markdown_v2()}\!',
         reply_markup=reply_markup,
     )
     return CHOICE
