@@ -12,7 +12,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from file_read_function import read_file
 
 
-def choice(event, vk_api, q_n_a, redis_db):
+def user_response(event, vk_api, q_n_a, redis_db):
     keyboard = VkKeyboard()
     keyboard.add_button('Новый вопрос', color=VkKeyboardColor.DEFAULT)
     keyboard.add_button('Сдаться', color=VkKeyboardColor.NEGATIVE)
@@ -91,4 +91,4 @@ if __name__ == "__main__":
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            choice(event, vk, questions_and_answers, redis_db)
+            user_response(event, vk, questions_and_answers, redis_db)
