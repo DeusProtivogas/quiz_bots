@@ -20,9 +20,7 @@ def user_response(event, vk_api, q_n_a, redis_db):
     keyboard.add_line()  # Переход на вторую строку
     keyboard.add_button('Счет', color=VkKeyboardColor.DEFAULT)
 
-
     if event.text == "Сдаться":
-        # print(1)
         text = f'{q_n_a.get( redis_db.get( event.user_id ).decode("utf-8") )}'
         vk_api.messages.send(
             user_id=event.user_id,
@@ -34,13 +32,8 @@ def user_response(event, vk_api, q_n_a, redis_db):
     if event.text == "Новый вопрос":
 
         question, answer = random.choice(list(q_n_a.items()))
-        # print(question, answer)
         redis_db.set(event.user_id, question)
 
-        # print('1 ', redis_db.get(event.user_id).decode("utf-8"))
-        # print('2 ', q_n_a.get(
-        #     redis_db.get(event.user_id).decode("utf-8"))
-        #       )
         vk_api.messages.send(
             user_id=event.user_id,
             keyboard=keyboard.get_keyboard(),
@@ -66,6 +59,7 @@ def user_response(event, vk_api, q_n_a, redis_db):
                 message=f'Неправильно… Попробуешь ещё раз?',
                 random_id=random.randint(1, 1000)
             )
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='VK Bot')

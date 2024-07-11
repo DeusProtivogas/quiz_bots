@@ -2,8 +2,7 @@ import os
 import re
 
 
-def read_file(folder = 'questions'):
-    # QUIZ_FOLDER = 'questions'
+def read_file(folder='questions'):
     question_and_answer = {}
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -13,11 +12,9 @@ def read_file(folder = 'questions'):
         if filename.endswith('txt'):
             with open(os.path.join(questions_dir, filename), 'r', encoding='KOI8-R') as f:
                 file_contents = f.read()
-            # print(file_contents.split('\n\n'))
             question = None
             answer = None
             for question_answer in file_contents.split('\n\n')[3:]:
-                # print('-', q_n_a, end='')
                 if question_answer.strip().startswith('Вопрос'):
                     question = re.split(r'Вопрос \d+:', question_answer.replace('\n', ' '))[1].strip()
                 elif question_answer.strip().startswith('Ответ'):

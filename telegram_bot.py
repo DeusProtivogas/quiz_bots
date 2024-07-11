@@ -20,21 +20,8 @@ CUSTOM_KEYBOARD = [['Новый вопрос', 'Сдаться'],
                    ['Счет']]
 
 
-
-# Define a few command handlers. These usually take the two arguments update and
-# context.
 def start(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /start is issued."""
-
-
-    # res = r.set('foo', 'bar')
-    # # print(res)
-    # print(r.get('foo'))
-
-
     user = update.effective_user
-    # context.user_data['q_n_a'] = read_file(folder)
-    # redis_db = redis_db
     reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
     update.message.reply_markdown_v2(
         fr'Привет, {user.mention_markdown_v2()}\!',
@@ -46,16 +33,10 @@ def send_question(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
     question, answer = random.choice(list(questions_and_answers.items()))
 
-    # update.message.reply_markdown_v2(
-    #     fr'Hi {user.mention_markdown_v2()}\!',
-    #     reply_markup=ForceReply(selective=True),
-    # )
     redis_db.set( update.effective_user.id, question )
 
-    reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
     update.message.reply_text(
         text=f"{question}",
-        # reply_markup=ReplyKeyboardRemove(),
     )
     return CHECK_ANSWER
 
@@ -78,6 +59,7 @@ def check_answer(update: Update, context: CallbackContext) -> None:
         )
     return CHOICE
 
+
 def surrender(update: Update, context: CallbackContext) -> None:
 
     reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
@@ -87,18 +69,14 @@ def surrender(update: Update, context: CallbackContext) -> None:
         reply_markup=reply_markup,
     )
     send_question(update, context)
-    # return NEW_QUESTION
 
 
 def main(folder) -> None:
 
     telegram_token = os.getenv('TELEGRAM_TOKEN')
 
-    """Start the bot."""
-    # Create the Updater and pass it your bot's token.
     updater = Updater(telegram_token, use_context=True)
 
-    # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
 
     conv_handler = ConversationHandler(
@@ -107,11 +85,9 @@ def main(folder) -> None:
         states={
             CHOICE: [
                 MessageHandler(Filters.regex('Новый вопрос'), send_question),
-                # MessageHandler(Filters.regex('Счет'), send_question),
                 MessageHandler(Filters.regex('Сдаться$'), surrender),
             ],
             NEW_QUESTION: [MessageHandler(Filters.regex('Новый вопрос'), send_question)],
-            # SHOW_SCORE: [MessageHandler(Filters.regex('Счет'), send_question)],
             GIVE_UP: [MessageHandler(Filters.regex('Сдаться'), surrender)],
             CHECK_ANSWER: [
                 MessageHandler(Filters.regex('Новый вопрос'), send_question),
@@ -123,7 +99,6 @@ def main(folder) -> None:
         fallbacks=[],
     )
     dispatcher.add_handler(conv_handler)
-    dispatcher.add_handler(CommandHandler("help", help_command))
 
     updater.start_polling()
 
