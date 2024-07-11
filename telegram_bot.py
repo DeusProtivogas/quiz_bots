@@ -12,6 +12,8 @@ from file_read_function import read_file
 from telegram import Update, ForceReply, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler
 
+NEW_QUESTION, SHOW_SCORE, GIVE_UP, CHECK_ANSWER, CHOICE = range(5)
+
 logger = logging.getLogger(__name__)
 
 CUSTOM_KEYBOARD = [['Новый вопрос', 'Сдаться'],
@@ -48,11 +50,7 @@ def send_question(update: Update, context: CallbackContext) -> None:
     #     fr'Hi {user.mention_markdown_v2()}\!',
     #     reply_markup=ForceReply(selective=True),
     # )
-    print(update.effective_user.id, redis_db)
     redis_db.set( update.effective_user.id, question )
-
-    print('1 ', redis_db.get( update.effective_user.id ).decode("utf-8"))
-    print('2 ', questions_and_answers.get( redis_db.get( update.effective_user.id ).decode("utf-8") ))
 
     reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
     update.message.reply_text(
@@ -91,7 +89,6 @@ def surrender(update: Update, context: CallbackContext) -> None:
     send_question(update, context)
     # return NEW_QUESTION
 
-NEW_QUESTION, SHOW_SCORE, GIVE_UP, CHECK_ANSWER, CHOICE = range(5)
 
 def main(folder) -> None:
 
