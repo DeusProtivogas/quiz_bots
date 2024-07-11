@@ -6,7 +6,7 @@ import redis
 import logging
 from dotenv import load_dotenv
 
-from utilities import read_file
+from file_read_function import read_file
 
 from telegram import Update, ForceReply, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler

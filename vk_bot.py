@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
 
-from utilities import read_file
+from file_read_function import read_file
 
 
 def choice(event, vk_api, q_n_a, redis_db):

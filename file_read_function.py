@@ -4,7 +4,6 @@ import re
 
 def read_file():
     QUIZ_FOLDER = 'questions'
-
     question_and_answer = {}
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +32,7 @@ def read_file():
                     a = None
                     q = None
     return question_and_answer
+
 
 if __name__ == '__main__':
     read_file()
