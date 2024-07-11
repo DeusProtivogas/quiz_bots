@@ -12,11 +12,6 @@ from file_read_function import read_file
 from telegram import Update, ForceReply, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler
 
-logging.basicConfig(
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        level=logging.INFO
-    )
-
 logger = logging.getLogger(__name__)
 
 custom_keyboard = [['Новый вопрос', 'Сдаться'],
@@ -171,6 +166,11 @@ def main(folder) -> None:
 
 if __name__ == '__main__':
     # read_file()
+    logging.basicConfig(
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        level=logging.INFO
+    )
+
     parser = argparse.ArgumentParser(description='Telegram Bot')
     parser.add_argument('--folder', type=str, default='questions', help='Destination folder (default: questions)')
     args = parser.parse_args()
