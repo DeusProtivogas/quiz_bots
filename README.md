@@ -40,6 +40,11 @@
 ```
 TELEGRAM_TOKEN=токен для бота в телеграме
 VK_KEY=ключ для бота в вк
+REDIS_HOST= адрес базы Redis
+REDIS_PORT=порт Redis
+REDIS_DB=база
+REDIS_USERNAME
+REDIS_PASS
 ```
 
 

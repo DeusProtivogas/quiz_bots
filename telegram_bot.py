@@ -30,11 +30,12 @@ def start(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
 
     redis_db = redis.Redis(
-        host='redis-19024.c327.europe-west1-2.gce.redns.redis-cloud.com',
-        port=19024,
-        db=0,
-        username="default",
-        password='svHiq6auo7fXWuqGBzRIxVHEZQrRcfVS'
+        # host='redis-19024.c327.europe-west1-2.gce.redns.redis-cloud.com',
+        host=os.getenv('REDIS_HOST'),
+        port=os.getenv('REDIS_PORT'),
+        db=os.getenv('REDIS_DB'),
+        username=os.getenv('REDIS_USERNAME'),
+        password=os.getenv('REDIS_PASS'),
     )
     # res = r.set('foo', 'bar')
     # # print(res)
