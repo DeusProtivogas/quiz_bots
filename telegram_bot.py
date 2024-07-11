@@ -14,8 +14,8 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 
 logger = logging.getLogger(__name__)
 
-custom_keyboard = [['Новый вопрос', 'Сдаться'],
-                       ['Счет']]
+CUSTOM_KEYBOARD = [['Новый вопрос', 'Сдаться'],
+                   ['Счет']]
 
 
 
@@ -40,7 +40,7 @@ def start(update: Update, context: CallbackContext) -> None:
     user = update.effective_user
     context.user_data['q_n_a'] = read_file(folder)
     context.user_data['redis_db'] = redis_db
-    reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+    reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
     update.message.reply_markdown_v2(
         fr'Привет, {user.mention_markdown_v2()}\!',
         reply_markup=reply_markup,
@@ -69,7 +69,7 @@ def send_question(update: Update, context: CallbackContext) -> None:
     print('1 ', context.user_data['redis_db'].get( update.effective_user.id ).decode("utf-8"))
     print('2 ', context.user_data['q_n_a'].get( context.user_data['redis_db'].get( update.effective_user.id ).decode("utf-8") ))
 
-    reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+    reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
     update.message.reply_text(
         text=f"{question}",
         # reply_markup=ReplyKeyboardRemove(),
@@ -80,7 +80,7 @@ def send_question(update: Update, context: CallbackContext) -> None:
 def check_answer(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
     print('Ans', update.message.text)
-    reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+    reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
     if context.user_data['q_n_a'].get(
             context.user_data['redis_db'].get(
                 update.effective_user.id
@@ -99,7 +99,7 @@ def check_answer(update: Update, context: CallbackContext) -> None:
 
 def surrender(update: Update, context: CallbackContext) -> None:
 
-    reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+    reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
     update.message.reply_text(
         text=f"Правильный ответ - {context.user_data['q_n_a'].get( context.user_data['redis_db'].get( update.effective_user.id ).decode('utf-8') )}",
 
