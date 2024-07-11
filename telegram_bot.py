@@ -40,13 +40,6 @@ def start(update: Update, context: CallbackContext) -> None:
     )
     return CHOICE
 
-
-
-def help_command(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')
-
-
 def send_question(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
     question, answer = random.choice(list(questions_and_answers.items()))
