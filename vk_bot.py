@@ -1,6 +1,7 @@
 import os
 import random
 import redis
+import argparse
 
 import vk_api
 
@@ -67,10 +68,15 @@ def choice(event, vk_api, q_n_a, redis_db):
             )
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='VK Bot')
+    parser.add_argument('--folder', type=str, default='questions', help='Destination folder (default: questions)')
+    args = parser.parse_args()
+    folder = args.folder
+
     load_dotenv()
     telegram_token = os.getenv('VK_KEY')
 
-    questions_and_answers = read_file()
+    questions_and_answers = read_file(folder)
 
     redis_db = redis.Redis(
         host='redis-19024.c327.europe-west1-2.gce.redns.redis-cloud.com',

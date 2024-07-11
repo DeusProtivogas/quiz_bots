@@ -2,12 +2,12 @@ import os
 import re
 
 
-def read_file():
-    QUIZ_FOLDER = 'questions'
+def read_file(folder = 'questions'):
+    # QUIZ_FOLDER = 'questions'
     question_and_answer = {}
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    questions_dir = os.path.join(script_dir, QUIZ_FOLDER)
+    questions_dir = os.path.join(script_dir, folder)
 
     for filename in os.listdir(questions_dir):
         if filename.endswith('txt'):

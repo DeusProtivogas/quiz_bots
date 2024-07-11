@@ -2,6 +2,7 @@ import os
 import re
 import random
 import redis
+import argparse
 
 import logging
 from dotenv import load_dotenv
@@ -41,7 +42,7 @@ def start(update: Update, context: CallbackContext) -> None:
 
 
     user = update.effective_user
-    context.user_data['q_n_a'] = read_file()
+    context.user_data['q_n_a'] = read_file(folder)
     context.user_data['redis_db'] = redis_db
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
     update.message.reply_markdown_v2(
@@ -113,7 +114,7 @@ def surrender(update: Update, context: CallbackContext) -> None:
 
 NEW_QUESTION, SHOW_SCORE, GIVE_UP, CHECK_ANSWER, CHOICE = range(5)
 
-def main() -> None:
+def main(folder) -> None:
 
     load_dotenv()
     telegram_token = os.getenv('TELEGRAM_TOKEN')
@@ -166,35 +167,12 @@ def main() -> None:
     # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
 
-#
-# def read_file():
-#     QUIZ_FOLDER = 'questions/'
-#
-#     question_and_answer = {}
-#
-#     with open(QUIZ_FOLDER + '1vs1200.txt', 'r', encoding='KOI8-R') as f:
-#         file_contents = f.read()
-#     cntr = 1
-#     # print(file_contents.split('\n\n'))
-#     q = None
-#     a = None
-#     for q_n_a in file_contents.split('\n\n')[3:]:
-#         # print('-', q_n_a, end='')
-#         if q_n_a.strip().startswith('Вопрос'):
-#             q = re.split(r'Вопрос \d+:', q_n_a.replace('\n', ' '))[1].strip()
-#             print('---', q)
-#             print(cntr)
-#             cntr += 1
-#         elif q_n_a.strip().startswith('Ответ'):
-#             a = q_n_a.replace('\n', ' ').strip('Ответ:').strip()
-#             print('--', a)
-#         if q and a:
-#             question_and_answer[q] = a
-#             a = None
-#             q = None
-#     return question_and_answer
-
 
 if __name__ == '__main__':
     # read_file()
-    main()
+    parser = argparse.ArgumentParser(description='Telegram Bot')
+    parser.add_argument('--folder', type=str, default='questions', help='Destination folder (default: questions)')
+    args = parser.parse_args()
+    folder = args.folder
+
+    main(folder)

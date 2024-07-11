@@ -53,3 +53,14 @@ python telegram_bot.py
 ```sh
 python vk_bot.py
 ``` 
+
+Возможно указать путь до своей папки с вопросами (по умолчанию используется папка `questions`, находящаяся в корне проекта)
+
+Для этого используется аргумент `--folder`:
+
+```sh
+python telegram_bot.py --folder path
+``` 
+```sh
+python vk_bot.py --folder path
+``` 
