@@ -20,9 +20,13 @@ CUSTOM_KEYBOARD = [['Новый вопрос', 'Сдаться'],
                    ['Счет']]
 
 
+
 def start(update: Update, context: CallbackContext) -> None:
     user = update.effective_user
     reply_markup = ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
+
+
+
     update.message.reply_markdown_v2(
         fr'Привет, {user.mention_markdown_v2()}\!',
         reply_markup=reply_markup,
@@ -71,7 +75,28 @@ def surrender(update: Update, context: CallbackContext) -> None:
     send_question(update, context)
 
 
-def main(folder) -> None:
+
+if __name__ == '__main__':
+    load_dotenv()
+    logging.basicConfig(
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        level=logging.INFO
+    )
+
+    parser = argparse.ArgumentParser(description='Telegram Bot')
+    parser.add_argument('--folder', type=str, default='questions', help='Destination folder (default: questions)')
+    args = parser.parse_args()
+    folder = args.folder
+
+    questions_and_answers = read_file(folder)
+
+    redis_db = redis.Redis(
+        host=os.getenv('REDIS_HOST'),
+        port=os.getenv('REDIS_PORT'),
+        db=os.getenv('REDIS_DB'),
+        username=os.getenv('REDIS_USERNAME'),
+        password=os.getenv('REDIS_PASS'),
+    )
 
     telegram_token = os.getenv('TELEGRAM_TOKEN')
 
@@ -103,28 +128,3 @@ def main(folder) -> None:
     updater.start_polling()
 
     updater.idle()
-
-
-if __name__ == '__main__':
-    load_dotenv()
-    logging.basicConfig(
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        level=logging.INFO
-    )
-
-    parser = argparse.ArgumentParser(description='Telegram Bot')
-    parser.add_argument('--folder', type=str, default='questions', help='Destination folder (default: questions)')
-    args = parser.parse_args()
-    folder = args.folder
-
-    questions_and_answers = read_file(folder)
-
-    redis_db = redis.Redis(
-        host=os.getenv('REDIS_HOST'),
-        port=os.getenv('REDIS_PORT'),
-        db=os.getenv('REDIS_DB'),
-        username=os.getenv('REDIS_USERNAME'),
-        password=os.getenv('REDIS_PASS'),
-    )
-
-    main(folder)
