@@ -12,7 +12,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from file_read_function import read_file
 
 
-def user_response(event, vk_api, q_n_a, redis_db):
+def get_user_response(event, vk_api, q_n_a, redis_db):
     keyboard = VkKeyboard()
     keyboard.add_button('Новый вопрос', color=VkKeyboardColor.DEFAULT)
     keyboard.add_button('Сдаться', color=VkKeyboardColor.NEGATIVE)
@@ -73,11 +73,11 @@ if __name__ == "__main__":
     questions_and_answers = read_file(folder)
 
     redis_db = redis.Redis(
-        host='redis-19024.c327.europe-west1-2.gce.redns.redis-cloud.com',
-        port=19024,
-        db=0,
-        username="default",
-        password='svHiq6auo7fXWuqGBzRIxVHEZQrRcfVS'
+        host=os.getenv('REDIS_HOST'),
+        port=os.getenv('REDIS_PORT'),
+        db=os.getenv('REDIS_DB'),
+        username=os.getenv('REDIS_USERNAME'),
+        password=os.getenv('REDIS_PASS'),
     )
 
     vk_session = vk_api.VkApi(token=telegram_token)
@@ -85,4 +85,4 @@ if __name__ == "__main__":
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            user_response(event, vk, questions_and_answers, redis_db)
+            get_user_response(event, vk, questions_and_answers, redis_db)
